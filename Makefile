@@ -5,7 +5,7 @@ PROFILER_JAR=async-profiler.jar
 CC=gcc
 CFLAGS=-O2
 CPP=g++
-CPPFLAGS=-O2
+CPPFLAGS=-O2 -std=c++11
 INCLUDES=-I$(JAVA_HOME)/include
 JAVAC=$(JAVA_HOME)/bin/javac
 JAR=$(JAVA_HOME)/bin/jar

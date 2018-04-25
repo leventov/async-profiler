@@ -10,7 +10,7 @@ async-profiler can trace the following kinds of events:
  - CPU cycles
  - Hardware and Software performance counters like cache misses, branch misses, page faults, context switches etc.
  - Allocations in Java Heap
- - Contented lock attempts, including both Java object monitors and ReentrantLocks
+ - Contented lock attempts, including both Java object monitors and ReentrantLocks, or any `Unsafe.park()` events
 
 ## CPU profiling
 
@@ -191,14 +191,14 @@ or `status` option is given, the profiler will run for the specified period
 of time and then automatically stop.  
 Example: `./profiler.sh -d 30 8983`
 
-* `-e event` - the profiling event: `cpu`, `alloc`, `lock`, `cache-misses` etc.
+* `-e event` - the profiling event: `cpu`, `alloc`, `lock`, `park`, `cache-misses` etc.
 Use `list` to see the complete list of available events.
 
   In allocation profiling mode the top frame of every call trace is the class
 of the allocated object, and the counter is the heap pressure (the total size
 of allocated TLABs or objects outside TLAB).
 
-  In lock profiling mode the top frame is the class of lock/monitor, and
+  In lock and park profiling modes the top frame is the class of lock/monitor, and
 the counter is number of nanoseconds it took to enter this lock/monitor.  
 
   Two special event types are supported on Linux: hardware breakpoints

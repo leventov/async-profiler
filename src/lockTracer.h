@@ -28,15 +28,28 @@ class LockTracer : public Engine {
     static jlong _start_time;
     static jclass _LockSupport;
     static jmethodID _getBlocker;
+    static jmethodID _Unsafe_park;
     static UnsafeParkFunc _original_Unsafe_Park;
+    static LockTracer* _the_lockTracer;
 
-    static jclass getParkBlockerClass(jvmtiEnv* jvmti, JNIEnv* env);
+    bool _traceOnlyLockContention;
+
     static void recordContendedLock(jclass lock_class, jlong time);
     static void bindUnsafePark(UnsafeParkFunc entry);
 
+    jclass getParkBlockerClass(jvmtiEnv* jvmti, JNIEnv* env);
+
   public:
+    LockTracer(bool traceOnlyLockContention) {
+        _traceOnlyLockContention = traceOnlyLockContention;
+    }
+
     const char* name() {
-        return "lock";
+        if (_traceOnlyLockContention) {
+            return "lock";
+        } else {
+            return "park";
+        }
     }
 
     Error start(const char* event, long interval);
@@ -44,7 +57,9 @@ class LockTracer : public Engine {
 
     static void JNICALL MonitorContendedEnter(jvmtiEnv* jvmti, JNIEnv* env, jthread thread, jobject object);
     static void JNICALL MonitorContendedEntered(jvmtiEnv* jvmti, JNIEnv* env, jthread thread, jobject object);
-    static void JNICALL UnsafeParkTrap(JNIEnv* env, jobject instance, jboolean isAbsolute, jlong time);
+    static void JNICALL UnsafeParkTrap_static(JNIEnv* env, jobject instance, jboolean isAbsolute, jlong time);
+
+    void JNICALL UnsafeParkTrap(JNIEnv* env, jobject instance, jboolean isAbsolute, jlong time);
 };
 
 #endif // _LOCKTRACER_H

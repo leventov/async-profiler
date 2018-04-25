@@ -32,7 +32,7 @@ const Error Error::OK(NULL);
 //     stop          - stop profiling
 //     status        - print profiling status (inactive / running for X seconds)
 //     list          - show the list of available profiling events
-//     event=EVENT   - which event to trace (cpu, alloc, lock, cache-misses etc.)
+//     event=EVENT   - which event to trace (cpu, alloc, lock, park, cache-misses etc.)
 //     collapsed[=C] - dump collapsed stacks (the format used by FlameGraph script)
 //                     C is counter type: 'samples' or 'total'
 //     svg[=C]       - produce Flame Graph in SVG format

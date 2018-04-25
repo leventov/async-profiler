@@ -371,7 +371,9 @@ Error Profiler::start(const char* event, long interval, int frame_buffer_size, b
     if (strcmp(event, EVENT_ALLOC) == 0) {
         _engine = new AllocTracer();
     } else if (strcmp(event, EVENT_LOCK) == 0) {
-        _engine = new LockTracer();
+        _engine = new LockTracer(true);
+    } else if (strcmp(event, EVENT_PARK) == 0) {
+        _engine = new LockTracer(false);
     } else {
         _engine = new PerfEvents();
     }

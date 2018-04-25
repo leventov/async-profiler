@@ -68,7 +68,7 @@ Error PerfEvents::start(const char* event, long interval) {
     installSignalHandler();
 
     long sec = _interval / 1000000000;
-    long usec = (_interval % 1000000000) / 1000;
+    int usec = (int) (_interval % 1000000000) / 1000;
     struct itimerval tv = {{sec, usec}, {sec, usec}};
     setitimer(ITIMER_PROF, &tv, NULL);
 
